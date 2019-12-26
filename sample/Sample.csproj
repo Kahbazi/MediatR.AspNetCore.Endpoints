@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediatR.Extensions.Microsoft.DependencyInjection\src\MediatR.Extensions.Microsoft.DependencyInjection\MediatR.Extensions.Microsoft.DependencyInjection.csproj" />
+    <ProjectReference Include="..\MediatR\src\MediatR\MediatR.csproj" />
+    <ProjectReference Include="..\src\MediatREndpoint\MediatREndpoint.csproj" />
+  </ItemGroup>
+
+</Project>
