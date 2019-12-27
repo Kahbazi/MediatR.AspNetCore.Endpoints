@@ -1,1 +1,1 @@
-# MediatREndpoint
+# MediatR.AspNetCore.Endpoints
