@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>pure MediatR for ASP.NET Core without the needs for controllers</Description>
+    <Copyright>Copyright Kahbazi</Copyright>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>MediatR.AspNetCore.Endpoints</AssemblyName>
+    <PackageId>MediatR.AspNetCore.Endpoints</PackageId>
+    <PackageTags>mediator;aspnetcore;endpoints;</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/jbogard/MediatR/master/assets/logo/gradient_128x128.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/Kahbazi/MediatR.AspNetCore.Endpoints</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/Kahbazi/MediatR.AspNetCore.Endpoints/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git://github.com/Kahbazi/MediatR.AspNetCore.Endpoints</RepositoryUrl>
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MediatR\src\MediatR\MediatR.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+</Project>

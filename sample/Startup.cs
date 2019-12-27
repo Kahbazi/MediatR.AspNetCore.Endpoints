@@ -1,5 +1,5 @@
 using MediatR;
-using MediatREndpoint;
+using MediatR.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +14,7 @@ namespace Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(GetType().Assembly);
-            services.AddMediatREndpoint();
+            services.AddMediatREndpoints();
         }
 
 

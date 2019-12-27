@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MediatR.Extensions.Microsoft.DependencyInjection\src\MediatR.Extensions.Microsoft.DependencyInjection\MediatR.Extensions.Microsoft.DependencyInjection.csproj" />
     <ProjectReference Include="..\MediatR\src\MediatR\MediatR.csproj" />
-    <ProjectReference Include="..\src\MediatREndpoint\MediatREndpoint.csproj" />
+    <ProjectReference Include="..\src\MediatR.AspNetCore.Endpoints\MediatR.AspNetCore.Endpoints.csproj" />
   </ItemGroup>
 
 </Project>

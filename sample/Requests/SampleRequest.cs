@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MediatREndpoint;
+using MediatR.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Http;
 
 namespace Sample.Requests
