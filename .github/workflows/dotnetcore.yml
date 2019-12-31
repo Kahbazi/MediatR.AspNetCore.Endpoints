@@ -16,6 +16,6 @@ jobs:
     - name: Get submodule projects 
       run: git submodule update --init --recursive
     - name: Build with dotnet
-      run: dotnet build --configuration Release --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/mediatr-ci/api/v3/index.json 
+      run: dotnet build --configuration Release 
     - name: Test with dotnet
       run: dotnet test --configuration Release
