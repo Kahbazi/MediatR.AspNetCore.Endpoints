@@ -1,6 +1,0 @@
-[submodule "MediatR"]
-	path = MediatR
-	url = https://github.com/jbogard/MediatR.git
-[submodule "MediatR.Extensions.Microsoft.DependencyInjection"]
-	path = MediatR.Extensions.Microsoft.DependencyInjection
-	url = https://github.com/jbogard/MediatR.Extensions.Microsoft.DependencyInjection.git
