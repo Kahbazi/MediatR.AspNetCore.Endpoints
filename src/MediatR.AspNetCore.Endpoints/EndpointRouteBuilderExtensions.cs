@@ -25,6 +25,12 @@ namespace MediatR.AspNetCore.Endpoints
 
         public static void MapMediatR(this IEndpointRouteBuilder endpointsBuilder, PathString pathString)
         {
+            var mediator = endpointsBuilder.ServiceProvider.GetService<IMediator>();
+            if (mediator == null)
+            {
+                throw new InvalidOperationException($"IMediator has not added to IServiceCollection. You can add it with services.AddmediatR(...);");
+            }
+
             var options = endpointsBuilder.ServiceProvider.GetService<IOptions<MediatorEndpointOptions>>();
 
             var mediatorRequestDelegate = CreateRequestDelegate();
@@ -63,7 +69,7 @@ namespace MediatR.AspNetCore.Endpoints
                         //}
                         //else
                         //{
-                            template = httpAttribute.Template;
+                        template = httpAttribute.Template;
                         //}
 
                         CreateEndpoint(endpointsBuilder, requestMetadata, metadata, httpAttribute.Template, pathString, httpMethodMetadata, mediatorRequestDelegate);

@@ -17,6 +17,16 @@ namespace MediatREndpoint.Tests
     public class EndpointRouteBuilderExtensionsTest
     {
         [Test]
+        public void ThrowException()
+        {
+            var services = new ServiceCollection();
+            var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
+            var builder = new DefaultEndpointRouteBuilder(applicationBuilder);
+
+            Assert.Throws<InvalidOperationException>(() => builder.MapMediatR("/api"));
+        }
+
+        [Test]
         public void WithPathString()
         {
             var services = new ServiceCollection();
