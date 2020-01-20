@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatR.AspNetCore.Endpoint
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "sample\Sample.csproj", "{198BBAD6-A051-4E29-9613-ECD1E00D4DC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "benchmark\Benchmark\Benchmark.csproj", "{1CE188D1-B95D-4173-BD40-8F780689B4EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{6A8A0B51-1283-4940-A064-43F9944185AD} = {E42A950D-4635-4EA0-A96A-E70C29A55D07}
 		{A6731B4E-8716-4954-A22A-48F4C770BB24} = {4D041129-F8B8-4772-81DC-A3F47FF55339}
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
+		{1CE188D1-B95D-4173-BD40-8F780689B4EC} = {4D041129-F8B8-4772-81DC-A3F47FF55339}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {075233DA-4C0D-4D58-8D39-F49FB7F99703}
