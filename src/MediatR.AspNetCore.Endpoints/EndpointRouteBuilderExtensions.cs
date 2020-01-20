@@ -28,7 +28,7 @@ namespace MediatR.AspNetCore.Endpoints
             var mediator = endpointsBuilder.ServiceProvider.GetService<IMediator>();
             if (mediator == null)
             {
-                throw new InvalidOperationException($"IMediator has not added to IServiceCollection. You can add it with services.AddmediatR(...);");
+                throw new InvalidOperationException($"IMediator has not added to IServiceCollection. You can add it with services.AddMediatR(...);");
             }
 
             var options = endpointsBuilder.ServiceProvider.GetService<IOptions<MediatorEndpointOptions>>();

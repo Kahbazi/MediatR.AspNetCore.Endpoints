@@ -29,7 +29,7 @@ namespace MediatREndpoint.Tests
         [Test]
         public void WithPathString()
         {
-            var services = new ServiceCollection();
+            var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
             services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<SimpleRequest, Unit>) });
 
@@ -48,7 +48,7 @@ namespace MediatREndpoint.Tests
         [Test]
         public void RequestWithNoAttribute()
         {
-            var services = new ServiceCollection();
+            var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
             services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<SimpleRequest, Unit>) });
 
@@ -67,7 +67,7 @@ namespace MediatREndpoint.Tests
         [Test]
         public void MultipleRouteRequestAddsMultipleEndpoints()
         {
-            var services = new ServiceCollection();
+            var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
             services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<MultipleRouteRequest, Unit>) });
 
