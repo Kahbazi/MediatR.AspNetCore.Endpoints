@@ -19,32 +19,17 @@ namespace Sample.Requests
     {
         public string Name { get; set; }
 
-        public DateTime Timestemp { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 
-    public class DerivedSampleResponse  : SampleResponse
+    public class SampleRequestHandler : IRequestHandler<SampleRequest, SampleResponse>
     {
-        public int AnotherProperty { get; set; }
-    }
-
-    public abstract class BaseRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
-    {
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken)
+        public Task<SampleResponse> Handle(SampleRequest request, CancellationToken cancellationToken)
         {
-            return Run(request);
-        }
-
-        public abstract Task<TResponse> Run(TRequest request);
-    }
-
-    public class SampleRequestHandler : BaseRequestHandler<SampleRequest, SampleResponse>
-    {
-        public override Task<SampleResponse> Run(SampleRequest request)
-        {
-            return Task.FromResult<SampleResponse>(new DerivedSampleResponse
+            return Task.FromResult<SampleResponse>(new SampleResponse
             {
                 Name = "Kahbazi",
-                Timestemp = DateTime.Now
+                Timestamp = DateTime.Now
             });
         }
     }
