@@ -21,13 +21,15 @@ namespace Sample.Requests
 
     public class SampleRequestHandler : IRequestHandler<SampleRequest, SampleResponse>
     {
-        public Task<SampleResponse> Handle(SampleRequest request, CancellationToken cancellationToken)
+        public async Task<SampleResponse> Handle(SampleRequest request, CancellationToken cancellationToken)
         {
-            return Task.FromResult<SampleResponse>(new SampleResponse
+            await Task.Delay(200);
+
+            return new SampleResponse
             {
                 Name = "Kahbazi",
                 Timestamp = DateTime.Now
-            });
+            };
         }
     }
 }
