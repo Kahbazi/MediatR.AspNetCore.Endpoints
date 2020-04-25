@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using MediatR.AspNetCore.Endpoints;
 
-namespace MediatR.AspNetCore.Endpoints
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
@@ -14,8 +15,8 @@ namespace MediatR.AspNetCore.Endpoints
                 throw new InvalidOperationException($"typeof(IMediator) is not added to service collection. Make sure to call services.AddMediatR() before service.AddMediatR.AspNetCore.Endpoints()");
             }
 
-            var handlerTypes = services.Where(x => x.ServiceType.IsGenericType && x.ServiceType.GetGenericTypeDefinition() == typeof(MediatR.IRequestHandler<,>))
-                .Select(x => x.ServiceType);
+            var handlerTypes = services.Where(x => x.ServiceType.IsGenericType && x.ServiceType.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))
+                .Select(x => x.ImplementationType);
 
             return AddMediatREndpoints(services, handlerTypes);
         }
@@ -24,7 +25,7 @@ namespace MediatR.AspNetCore.Endpoints
         {
             foreach (var handlerType in handlerTypes)
             {
-                if (handlerType.GetGenericTypeDefinition() != typeof(IRequestHandler<,>))
+                if (!(handlerType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))))
                 {
                     throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>" +
                         $"All types in {nameof(MediatorEndpointOptions)}.{nameof(MediatorEndpointOptions.HandlerTypes)} must implement IReqeustHandler<,>.");

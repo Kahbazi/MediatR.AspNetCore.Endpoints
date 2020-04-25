@@ -2,11 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MediatR.AspNetCore.Endpoints;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Sample.Requests
 {
-    [Post]
     public class SampleRequest : IRequest<SampleResponse>
     {
         public int Id { get; set; }
@@ -21,6 +20,7 @@ namespace Sample.Requests
 
     public class SampleRequestHandler : IRequestHandler<SampleRequest, SampleResponse>
     {
+        [HttpPost("SampleRequest")]
         public async Task<SampleResponse> Handle(SampleRequest request, CancellationToken cancellationToken)
         {
             await Task.Delay(200);

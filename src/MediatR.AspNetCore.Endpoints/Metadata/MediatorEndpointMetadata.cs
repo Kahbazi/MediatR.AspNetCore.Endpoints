@@ -2,9 +2,9 @@
 
 namespace MediatR.AspNetCore.Endpoints
 {
-    internal class RequestMetadata : IRequestMetadata
+    internal class MediatorEndpointMetadata : IMediatorEndpointMetadata
     {
-        public RequestMetadata(Type requestType, Type responseType)
+        public MediatorEndpointMetadata(Type requestType, Type responseType)
         {
             RequestType = requestType;
             ResponseType = responseType;

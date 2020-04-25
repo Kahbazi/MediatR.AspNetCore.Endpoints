@@ -1,18 +1,20 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using MediatR.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MediatREndpoint.FunctionalTests.Requests
 {
-    [AllowAnonymous]
-    [Get("AllowAnonymousRequest")]
     public class AllowAnonymousRequest : IRequest
     {
     }
+
     public class AllowAnonymousRequestHandler : IRequestHandler<AllowAnonymousRequest>
     {
+
+        [AllowAnonymous]
+        [HttpGet("AllowAnonymousRequest")]
         public Task<Unit> Handle(AllowAnonymousRequest request, CancellationToken cancellationToken)
         {
             return Unit.Task;

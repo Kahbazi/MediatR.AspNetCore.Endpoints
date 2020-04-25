@@ -8,6 +8,7 @@ using MediatR;
 using MediatR.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -31,7 +32,7 @@ namespace MediatREndpoint.Tests
         {
             var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
-            services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<SimpleRequest, Unit>) });
+            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) });
 
             var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
             IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
@@ -50,7 +51,7 @@ namespace MediatREndpoint.Tests
         {
             var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
-            services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<SimpleRequest, Unit>) });
+            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) });
 
             var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
             IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
@@ -69,7 +70,7 @@ namespace MediatREndpoint.Tests
         {
             var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
-            services.AddMediatREndpoints(new Type[] { typeof(IRequestHandler<MultipleRouteRequest, Unit>) });
+            services.AddMediatREndpoints(new Type[] { typeof(MultipleRouteRequestHandler) });
 
             var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
             IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
@@ -108,12 +109,30 @@ namespace MediatREndpoint.Tests
 
         }
 
-        [Get("route1")]
-        [Get("route2")]
-        [Post("route3")]
+        private class SimpleRequestHandler : IRequestHandler<SimpleRequest>
+        {
+            public Task<Unit> Handle(SimpleRequest request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+
         private class MultipleRouteRequest : IRequest
         {
 
         }
+
+        private class MultipleRouteRequestHandler : IRequestHandler<MultipleRouteRequest>
+        {
+            [HttpGet("route1")]
+            [HttpGet("route2")]
+            [HttpPost("route3")]
+            public Task<Unit> Handle(MultipleRouteRequest request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }

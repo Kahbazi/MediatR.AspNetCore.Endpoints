@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,19 +37,23 @@ namespace MediatR.AspNetCore.Endpoints
 
             foreach (var handlerType in options.Value.HandlerTypes)
             {
-                if (handlerType.GetGenericTypeDefinition() != typeof(IRequestHandler<,>))
+                var requestHandlerType = handlerType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
+
+                if (requestHandlerType == null)
                 {
                     throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>" +
                         $"All types in {nameof(MediatorEndpointOptions)}.{nameof(MediatorEndpointOptions.HandlerTypes)} must implement IReqeustHandler<,>.");
                 }
 
-                var requestType = handlerType.GetGenericArguments()[0];
-                var responseType = handlerType.GetGenericArguments()[1];
-                var requestMetadata = new RequestMetadata(requestType, responseType);
+                var requestArguments = requestHandlerType.GetGenericArguments();
+                var requestType = requestArguments[0];
+                var responseType = requestArguments[1];
 
-                var metadata = requestMetadata.RequestType.GetCustomAttributes(false);
+                var requestMetadata = new MediatorEndpointMetadata(requestType, responseType);
 
-                var httpAttributes = metadata.OfType<HttpMethodMetadataAttribute>().ToArray();
+                var metadata = handlerType.GetMethod("Handle").GetCustomAttributes(false);
+
+                var httpAttributes = metadata.OfType<HttpMethodAttribute>().ToArray();
                 if (httpAttributes.Length == 0)
                 {
                     var httpMethodMetadata = new HttpMethodMetadata(new[] { HttpMethods.Post });
@@ -59,7 +64,7 @@ namespace MediatR.AspNetCore.Endpoints
                     for (int i = 0; i < httpAttributes.Length; i++)
                     {
                         var httpAttribute = httpAttributes[i];
-                        var httpMethodMetadata = new HttpMethodMetadata(new[] { httpAttribute.HttpMethod });
+                        var httpMethodMetadata = new HttpMethodMetadata(httpAttribute.HttpMethods);
 
                         string template;
                         if (string.IsNullOrEmpty(httpAttribute.Template))
@@ -78,7 +83,7 @@ namespace MediatR.AspNetCore.Endpoints
         }
 
         private static void CreateEndpoint(IEndpointRouteBuilder endpointsBuilder,
-            RequestMetadata requestMetadata,
+            MediatorEndpointMetadata requestMetadata,
             object[] metadata,
             string template,
             PathString pathString,
@@ -106,7 +111,7 @@ namespace MediatR.AspNetCore.Endpoints
         {
             var endpoint = context.GetEndpoint();
 
-            var requestMetadata = endpoint.Metadata.GetMetadata<IRequestMetadata>();
+            var requestMetadata = endpoint.Metadata.GetMetadata<IMediatorEndpointMetadata>();
 
             object model;
             if (context.Request.ContentLength.GetValueOrDefault() != 0)
