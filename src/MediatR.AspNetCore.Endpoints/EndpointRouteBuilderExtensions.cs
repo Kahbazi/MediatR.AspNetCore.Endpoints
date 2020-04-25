@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -12,6 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace MediatR.AspNetCore.Endpoints
 {
+
     public static class EndpointRouteBuilderExtensions
     {
         public static void MapMediatR(this IEndpointRouteBuilder endpointsBuilder, string pathString)
@@ -62,16 +62,16 @@ namespace MediatR.AspNetCore.Endpoints
                         var httpMethodMetadata = new HttpMethodMetadata(new[] { httpAttribute.HttpMethod });
 
                         string template;
-                        //if (string.IsNullOrEmpty(httpAttribute.Template))
-                        //{
-                        //    template = "/";
-                        //}
-                        //else
-                        //{
-                        template = httpAttribute.Template;
-                        //}
+                        if (string.IsNullOrEmpty(httpAttribute.Template))
+                        {
+                            template = "/" + requestType.Name;
+                        }
+                        else
+                        {
+                            template = httpAttribute.Template;
+                        }
 
-                        CreateEndpoint(endpointsBuilder, requestMetadata, metadata, httpAttribute.Template, pathString, httpMethodMetadata);
+                        CreateEndpoint(endpointsBuilder, requestMetadata, metadata, template, pathString, httpMethodMetadata);
                     }
                 }
             }
@@ -86,7 +86,7 @@ namespace MediatR.AspNetCore.Endpoints
         {
             if (pathString.HasValue)
             {
-                template = $"{pathString.Value.TrimEnd('/')}/{template}";
+                template = $"{pathString.Value.TrimEnd('/')}/{template.TrimStart('/')}";
             }
 
             var routePattern = RoutePatternFactory.Parse(template);
@@ -141,8 +141,9 @@ namespace MediatR.AspNetCore.Endpoints
 
             var response = await mediator.Send(model, context.RequestAborted);
 
-            var objectType = response?.GetType() ?? requestMetadata.ResponseType;
+            context.Response.Headers.Add("content-type", "application/json");
 
+            var objectType = response?.GetType() ?? requestMetadata.ResponseType;
             await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, null, context.RequestAborted);
 
             await context.Response.Body.FlushAsync(context.RequestAborted);
