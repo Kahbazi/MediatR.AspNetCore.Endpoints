@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -33,8 +34,6 @@ namespace MediatR.AspNetCore.Endpoints
 
             var options = endpointsBuilder.ServiceProvider.GetService<IOptions<MediatorEndpointOptions>>();
 
-            var mediatorRequestDelegate = CreateRequestDelegate();
-
             foreach (var handlerType in options.Value.HandlerTypes)
             {
                 if (handlerType.GetGenericTypeDefinition() != typeof(IRequestHandler<,>))
@@ -53,7 +52,7 @@ namespace MediatR.AspNetCore.Endpoints
                 if (httpAttributes.Length == 0)
                 {
                     var httpMethodMetadata = new HttpMethodMetadata(new[] { HttpMethods.Post });
-                    CreateEndpoint(endpointsBuilder, requestMetadata, metadata, requestMetadata.RequestType.Name, pathString, httpMethodMetadata, mediatorRequestDelegate);
+                    CreateEndpoint(endpointsBuilder, requestMetadata, metadata, requestMetadata.RequestType.Name, pathString, httpMethodMetadata);
                 }
                 else
                 {
@@ -72,7 +71,7 @@ namespace MediatR.AspNetCore.Endpoints
                         template = httpAttribute.Template;
                         //}
 
-                        CreateEndpoint(endpointsBuilder, requestMetadata, metadata, httpAttribute.Template, pathString, httpMethodMetadata, mediatorRequestDelegate);
+                        CreateEndpoint(endpointsBuilder, requestMetadata, metadata, httpAttribute.Template, pathString, httpMethodMetadata);
                     }
                 }
             }
@@ -83,8 +82,7 @@ namespace MediatR.AspNetCore.Endpoints
             object[] metadata,
             string template,
             PathString pathString,
-            HttpMethodMetadata httpMethodMetadata,
-            RequestDelegate mediatorRequestDelegate)
+            HttpMethodMetadata httpMethodMetadata)
         {
             if (pathString.HasValue)
             {
@@ -93,7 +91,7 @@ namespace MediatR.AspNetCore.Endpoints
 
             var routePattern = RoutePatternFactory.Parse(template);
 
-            var builder = endpointsBuilder.Map(routePattern, mediatorRequestDelegate);
+            var builder = endpointsBuilder.Map(routePattern, MediatorRequestDelegate);
             builder.WithDisplayName(requestMetadata.RequestType.Name);
             builder.WithMetadata(requestMetadata);
             builder.WithMetadata(httpMethodMetadata);
@@ -102,58 +100,52 @@ namespace MediatR.AspNetCore.Endpoints
             {
                 builder.WithMetadata(metadata[i]);
             }
-
-
         }
 
-
-        private static RequestDelegate CreateRequestDelegate()
+        private static async Task MediatorRequestDelegate(HttpContext context)
         {
-            return async context =>
+            var endpoint = context.GetEndpoint();
+
+            var requestMetadata = endpoint.Metadata.GetMetadata<IRequestMetadata>();
+
+            object model;
+            if (context.Request.ContentLength.GetValueOrDefault() != 0)
             {
-                var endpoint = context.GetEndpoint();
-
-                var requestMetadata = endpoint.Metadata.GetMetadata<IRequestMetadata>();
-
-                object model;
-                if (context.Request.ContentLength.GetValueOrDefault() != 0)
+                //https://github.com/aspnet/AspNetCore/blob/ec8304ae85d5a94cf3cd5efc5f89b986bc4eafd2/src/Mvc/Mvc.Core/src/Formatters/SystemTextJsonInputFormatter.cs#L72-L98
+                try
                 {
-                    //https://github.com/aspnet/AspNetCore/blob/ec8304ae85d5a94cf3cd5efc5f89b986bc4eafd2/src/Mvc/Mvc.Core/src/Formatters/SystemTextJsonInputFormatter.cs#L72-L98
-                    try
-                    {
-                        model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, null, context.RequestAborted);
-                    }
-                    catch (JsonException)
-                    {
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        return;
-                    }
-                    catch (Exception exception) when (exception is FormatException || exception is OverflowException)
-                    {
-                        context.Response.StatusCode = StatusCodes.Status400BadRequest;
-                        return;
-                    }
+                    model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, null, context.RequestAborted);
                 }
-                else
+                catch (JsonException)
                 {
-                    model = Activator.CreateInstance(requestMetadata.RequestType);
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    return;
                 }
-
-                if (model is IHttpContextAware httpContextAware)
+                catch (Exception exception) when (exception is FormatException || exception is OverflowException)
                 {
-                    httpContextAware.HttpContext = context;
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    return;
                 }
+            }
+            else
+            {
+                model = Activator.CreateInstance(requestMetadata.RequestType);
+            }
 
-                IMediator mediator = context.RequestServices.GetService<IMediator>();
+            if (model is IHttpContextAware httpContextAware)
+            {
+                httpContextAware.HttpContext = context;
+            }
 
-                var response = await mediator.Send(model, context.RequestAborted);
+            IMediator mediator = context.RequestServices.GetService<IMediator>();
 
-                var objectType = response?.GetType() ?? requestMetadata.ResponseType;
+            var response = await mediator.Send(model, context.RequestAborted);
 
-                await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, null, context.RequestAborted);
+            var objectType = response?.GetType() ?? requestMetadata.ResponseType;
 
-                await context.Response.Body.FlushAsync(context.RequestAborted);
-            };
+            await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, null, context.RequestAborted);
+
+            await context.Response.Body.FlushAsync(context.RequestAborted);
         }
     }
 }
