@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>MediatR.AspNetCore.Endpoints</id>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <authors>Kahbazi</authors>
     <owners>Kahbazi</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/Kahbazi/MediatR.AspNetCore.Endpoints</projectUrl>
     <description>Pure MediatR for ASP.NET Core without the needs for controllers</description>
-    <releaseNotes>Use MediatR in ASP.NET Core without MVC</releaseNotes>
-    <copyright>Copyright 2019</copyright>
+    <releaseNotes>Use MediatR in ASP.NET Core without controllers</releaseNotes>
+    <copyright>Copyright 2020</copyright>
     <tags>mediatR aspnetcore endpoint microservice</tags>
     <dependencies>
         <dependency id="MediatR" version="8.0.0" />
