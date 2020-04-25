@@ -3,16 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using MediatR.AspNetCore.Endpoints;
-using Microsoft.AspNetCore.Http;
 
 namespace Sample.Requests
 {
     [Post]
-    public class SampleRequest : IRequest<SampleResponse>, IHttpContextAware
+    public class SampleRequest : IRequest<SampleResponse>
     {
         public int Id { get; set; }
-
-        public HttpContext HttpContext { get; set; }
     }
 
     public class SampleResponse
