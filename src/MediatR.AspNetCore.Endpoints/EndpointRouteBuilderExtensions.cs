@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Patterns;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +30,7 @@ namespace MediatR.AspNetCore.Endpoints
                 var builder = endpointsBuilder.Map(routePattern, MediatorRequestDelegate);
                 builder.WithDisplayName(endpoint.RequestType.Name);
 
-                for (int i = 0; i < endpoint.Metadata.Count; i++)
+                for (var i = 0; i < endpoint.Metadata.Count; i++)
                 {
                     builder.WithMetadata(endpoint.Metadata[i]);
                 }
@@ -74,7 +72,7 @@ namespace MediatR.AspNetCore.Endpoints
                 httpContextAware.HttpContext = context;
             }
 
-            IMediator mediator = context.RequestServices.GetService<IMediator>();
+            var mediator = context.RequestServices.GetService<IMediator>();
 
             var response = await mediator.Send(model, context.RequestAborted);
 

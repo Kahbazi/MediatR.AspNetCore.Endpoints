@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47D525E0-84AE-47A3-AE9B-1911EEDE8015}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		src\MediatR.AspNetCore.Endpoints\Package.nuspec = src\MediatR.AspNetCore.Endpoints\Package.nuspec
 	EndProjectSection
 EndProject

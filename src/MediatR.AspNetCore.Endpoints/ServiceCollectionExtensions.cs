@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MediatR;
@@ -26,14 +26,14 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes)
         {
-            List<MediatorEndpoint> endpoints = new List<MediatorEndpoint>();
+            var endpoints = new List<MediatorEndpoint>();
 
             foreach (var handlerType in handlerTypes)
             {
                 var requestHandlerType = handlerType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
                 if (requestHandlerType == null)
                 {
-                    throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>"); 
+                    throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>");
                 }
 
                 var requestArguments = requestHandlerType.GetGenericArguments();
@@ -63,7 +63,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 else
                 {
-                    for (int i = 0; i < httpAttributes.Length; i++)
+                    for (var i = 0; i < httpAttributes.Length; i++)
                     {
                         var httpAttribute = httpAttributes[i];
                         var httpMethodMetadata = new HttpMethodMetadata(httpAttribute.HttpMethods);
