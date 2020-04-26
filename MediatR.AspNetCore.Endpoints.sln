@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\MediatR.AspNetCore.Endpoints\Package.nuspec = src\MediatR.AspNetCore.Endpoints\Package.nuspec
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputValidation", "InputValidation\InputValidation.csproj", "{7F083B0E-4053-487D-AA8B-B43783697609}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CE188D1-B95D-4173-BD40-8F780689B4EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F083B0E-4053-487D-AA8B-B43783697609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F083B0E-4053-487D-AA8B-B43783697609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F083B0E-4053-487D-AA8B-B43783697609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F083B0E-4053-487D-AA8B-B43783697609}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{A6731B4E-8716-4954-A22A-48F4C770BB24} = {4D041129-F8B8-4772-81DC-A3F47FF55339}
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
 		{1CE188D1-B95D-4173-BD40-8F780689B4EC} = {305BF753-F8A3-4A9E-B40A-92B5D20834A5}
+		{7F083B0E-4053-487D-AA8B-B43783697609} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {075233DA-4C0D-4D58-8D39-F49FB7F99703}
