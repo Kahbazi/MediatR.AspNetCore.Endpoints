@@ -48,7 +48,7 @@ namespace Benchmark
 
         private static async Task<string> SendRequest(HttpClient httpClient)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/greetings");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/greetings");
             var content = Encoding.UTF8.GetBytes("{\"Id\":47,\"Name\":\"kahbazi\"}");
             request.Content = new ByteArrayContent(content);
             request.Content.Headers.ContentLength = content.Length;
@@ -74,7 +74,7 @@ namespace Benchmark
 
                     app.UseEndpoints(endpoints =>
                     {
-                        endpoints.MapMediatR("/api");
+                        endpoints.MapMediatR();
                     });
                 });
 

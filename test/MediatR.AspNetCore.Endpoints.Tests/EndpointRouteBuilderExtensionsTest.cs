@@ -24,26 +24,7 @@ namespace MediatREndpoint.Tests
             var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
             var builder = new DefaultEndpointRouteBuilder(applicationBuilder);
 
-            Assert.Throws<InvalidOperationException>(() => builder.MapMediatR("/api"));
-        }
-
-        [Test]
-        public void WithPathString()
-        {
-            var services = new ServiceCollection().AddMediatR(GetType().Assembly);
-
-            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) });
-
-            var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
-            IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
-
-            builder.MapMediatR("/api");
-
-            var dataSource = builder.DataSources.First();
-            var endpoint = dataSource.Endpoints.First();
-
-            AssertEndpoint(endpoint, HttpMethods.Post, "/api/" + typeof(SimpleRequest).Name);
-
+            Assert.Throws<InvalidOperationException>(() => builder.MapMediatR());
         }
 
         [Test]

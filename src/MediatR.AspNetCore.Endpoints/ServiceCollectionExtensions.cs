@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using MediatR.AspNetCore.Endpoints;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -23,18 +26,76 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes)
         {
+            List<MediatorEndpoint> endpoints = new List<MediatorEndpoint>();
+
             foreach (var handlerType in handlerTypes)
             {
-                if (!(handlerType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))))
+                var requestHandlerType = handlerType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>));
+                if (requestHandlerType == null)
                 {
-                    throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>" +
-                        $"All types in {nameof(MediatorEndpointOptions)}.{nameof(MediatorEndpointOptions.HandlerTypes)} must implement IReqeustHandler<,>.");
+                    throw new InvalidOperationException($"Type ({handlerType.FullName}) is not an IReqeustHandler<,>"); 
+                }
+
+                var requestArguments = requestHandlerType.GetGenericArguments();
+                var requestType = requestArguments[0];
+                var responseType = requestArguments[1];
+
+                var requestMetadata = new MediatorEndpointMetadata(requestType, responseType);
+
+                var attributes = handlerType.GetMethod("Handle").GetCustomAttributes(false);
+
+                var httpAttributes = attributes.OfType<HttpMethodAttribute>().ToArray();
+                if (httpAttributes.Length == 0)
+                {
+                    var httpMethodMetadata = new HttpMethodMetadata(new[] { HttpMethods.Post });
+
+                    var metadata = new List<object>(attributes);
+                    metadata.Add(httpMethodMetadata);
+                    metadata.Add(requestMetadata);
+
+                    endpoints.Add(new MediatorEndpoint
+                    {
+                        Metadata = metadata,
+                        RequestType = requestMetadata.RequestType,
+                        ResponseType = requestMetadata.ResponseType,
+                        Uri = requestMetadata.RequestType.Name
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < httpAttributes.Length; i++)
+                    {
+                        var httpAttribute = httpAttributes[i];
+                        var httpMethodMetadata = new HttpMethodMetadata(httpAttribute.HttpMethods);
+
+                        string template;
+                        if (string.IsNullOrEmpty(httpAttribute.Template))
+                        {
+                            template = "/" + requestType.Name;
+                        }
+                        else
+                        {
+                            template = httpAttribute.Template;
+                        }
+
+                        var metadata = new List<object>(attributes);
+                        metadata.Add(httpMethodMetadata);
+                        metadata.Add(requestMetadata);
+
+                        endpoints.Add(new MediatorEndpoint
+                        {
+                            Metadata = metadata,
+                            RequestType = requestMetadata.RequestType,
+                            ResponseType = requestMetadata.ResponseType,
+                            Uri = template
+                        });
+                    }
                 }
             }
 
             services.Configure<MediatorEndpointOptions>(options =>
             {
-                options.HandlerTypes = handlerTypes;
+                options.Endpoints = endpoints;
             });
 
             return services;

@@ -7,6 +7,6 @@ namespace MediatR.AspNetCore.Endpoints
 {
     public class MediatorEndpointOptions
     {
-        public IEnumerable<Type> HandlerTypes { get; set; }
+        public IEnumerable<MediatorEndpoint> Endpoints { get; set; }
     }
 }

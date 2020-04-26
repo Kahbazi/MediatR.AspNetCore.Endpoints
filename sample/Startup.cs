@@ -21,7 +21,7 @@ namespace Sample
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapMediatR("/api");
+                endpoints.MapMediatR();
             });
         }
     }
