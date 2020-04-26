@@ -3,7 +3,7 @@ using MediatR.AspNetCore.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Sample
+namespace BasicSample
 {
     public class Startup
     {

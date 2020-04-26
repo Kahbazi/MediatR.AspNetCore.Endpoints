@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Benchmark
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
             BenchmarkRunner.Run<SampleHttpPost>();
         }

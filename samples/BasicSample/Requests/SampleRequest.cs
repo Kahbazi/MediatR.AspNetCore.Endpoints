@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Sample.Requests
+namespace BasicSample.Requests
 {
     public class SampleRequest : IRequest<SampleResponse>
     {
