@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MediatR.AspNetCore.Endpoints</id>
-    <version>0.2.0</version>
+    <version>1.0.0</version>
     <authors>Kahbazi</authors>
     <owners>Kahbazi</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
     <copyright>Copyright 2020</copyright>
     <tags>mediatR aspnetcore endpoint microservice</tags>
     <dependencies>
-        <dependency id="MediatR" version="8.0.0" />
+        <dependency id="MediatR" version="8.0.1" />
     </dependencies>
   </metadata>
 </package>

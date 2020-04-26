@@ -21,6 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark", "benchmark\Benc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmark", "benchmark", "{305BF753-F8A3-4A9E-B40A-92B5D20834A5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47D525E0-84AE-47A3-AE9B-1911EEDE8015}"
+	ProjectSection(SolutionItems) = preProject
+		src\MediatR.AspNetCore.Endpoints\Package.nuspec = src\MediatR.AspNetCore.Endpoints\Package.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
