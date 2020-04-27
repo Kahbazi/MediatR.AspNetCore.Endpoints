@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 
 namespace MediatR.AspNetCore.Endpoints
 {
-
     public static class EndpointRouteBuilderExtensions
     {
         public static void MapMediatR(this IEndpointRouteBuilder endpointsBuilder)

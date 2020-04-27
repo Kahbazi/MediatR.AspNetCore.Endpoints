@@ -27,7 +27,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\MediatR.AspNetCore.Endpoints\Package.nuspec = src\MediatR.AspNetCore.Endpoints\Package.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InputValidation", "samples\InputValidation\InputValidation.csproj", "{7F083B0E-4053-487D-AA8B-B43783697609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InputValidation", "samples\InputValidation\InputValidation.csproj", "{7F083B0E-4053-487D-AA8B-B43783697609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenApi", "samples\OpenApi\OpenApi.csproj", "{B39B5E32-3E69-4800-BF89-7E331C03342A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{7F083B0E-4053-487D-AA8B-B43783697609}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F083B0E-4053-487D-AA8B-B43783697609}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F083B0E-4053-487D-AA8B-B43783697609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B39B5E32-3E69-4800-BF89-7E331C03342A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B39B5E32-3E69-4800-BF89-7E331C03342A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B39B5E32-3E69-4800-BF89-7E331C03342A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B39B5E32-3E69-4800-BF89-7E331C03342A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{198BBAD6-A051-4E29-9613-ECD1E00D4DC2} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
 		{1CE188D1-B95D-4173-BD40-8F780689B4EC} = {305BF753-F8A3-4A9E-B40A-92B5D20834A5}
 		{7F083B0E-4053-487D-AA8B-B43783697609} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
+		{B39B5E32-3E69-4800-BF89-7E331C03342A} = {1C10CBF5-5C40-4F8D-A0CA-DB8251E21691}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {075233DA-4C0D-4D58-8D39-F49FB7F99703}

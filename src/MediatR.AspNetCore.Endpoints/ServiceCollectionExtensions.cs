@@ -56,6 +56,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     endpoints.Add(new MediatorEndpoint
                     {
                         Metadata = metadata,
+                        HandlerType = requestHandlerType,
                         RequestType = requestMetadata.RequestType,
                         ResponseType = requestMetadata.ResponseType,
                         Uri = requestMetadata.RequestType.Name
@@ -85,6 +86,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         endpoints.Add(new MediatorEndpoint
                         {
                             Metadata = metadata,
+                            HandlerType = requestHandlerType,
                             RequestType = requestMetadata.RequestType,
                             ResponseType = requestMetadata.ResponseType,
                             Uri = template
