@@ -3,7 +3,62 @@
 [![NuGet](https://img.shields.io/nuget/dt/mediatr.aspnetcore.endpoints.svg)](https://www.nuget.org/packages/mediatr.aspnetcore.endpoints) 
 [![NuGet](https://img.shields.io/nuget/vpre/mediatr.aspnetcore.endpoints.svg)](https://www.nuget.org/packages/mediatr.aspnetcore.endpoints)
 
+## Getting Started
 
+### Startup.cs
+```
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddMediatR(GetType().Assembly);
+        services.AddMediatREndpoints();
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        app.UseRouting();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapMediatR();
+        });
+    }
+}
+```
+### RequestHandler
+```csharp
+public class SampleRequestHandler : IRequestHandler<SampleRequest, SampleResponse>
+{
+    [HttpPost("SampleRequest")]
+    public async Task<SampleResponse> Handle(SampleRequest request, CancellationToken cancellationToken)
+    {
+        await Task.Delay(200);
+
+        return new SampleResponse
+        {
+            Name = "Kahbazi",
+            Timestamp = DateTime.Now
+        };
+    }
+}
+```
+### Request
+```csharp
+public class SampleRequest : IRequest<SampleResponse>
+{
+    public int Id { get; set; }
+}
+```
+### Response
+```csharp
+public class SampleResponse
+{
+    public string Name { get; set; }
+
+    public DateTime Timestamp { get; set; }
+}
+```
 
 ## Bechmark for a simple http request
 
