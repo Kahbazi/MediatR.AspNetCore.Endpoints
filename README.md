@@ -6,7 +6,7 @@
 ## Getting Started
 
 ### Startup.cs
-```
+```csharp
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
