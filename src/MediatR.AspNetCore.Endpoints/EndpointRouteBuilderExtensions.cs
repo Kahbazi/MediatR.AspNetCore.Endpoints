@@ -42,13 +42,16 @@ namespace MediatR.AspNetCore.Endpoints
 
             var requestMetadata = endpoint.Metadata.GetMetadata<IMediatorEndpointMetadata>();
 
+            var optionsAccessor = context.RequestServices.GetService<IOptions<MediatorEndpointOptions>>();
+            var options = optionsAccessor.Value;
+
             object model;
             if (context.Request.ContentLength.GetValueOrDefault() != 0)
             {
                 //https://github.com/aspnet/AspNetCore/blob/ec8304ae85d5a94cf3cd5efc5f89b986bc4eafd2/src/Mvc/Mvc.Core/src/Formatters/SystemTextJsonInputFormatter.cs#L72-L98
                 try
                 {
-                    model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, null, context.RequestAborted);
+                    model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, options.JsonSerializerOptions, context.RequestAborted);
                 }
                 catch (JsonException)
                 {
@@ -78,7 +81,7 @@ namespace MediatR.AspNetCore.Endpoints
             context.Response.Headers.Add("content-type", "application/json");
 
             var objectType = response?.GetType() ?? requestMetadata.ResponseType;
-            await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, null, context.RequestAborted);
+            await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, options.JsonSerializerOptions, context.RequestAborted);
 
             await context.Response.Body.FlushAsync(context.RequestAborted);
         }

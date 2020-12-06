@@ -13,6 +13,11 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddMediatREndpoints(this IServiceCollection services)
         {
+            return services.AddMediatREndpoints(configureOptions: null);
+        }
+
+        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, Action<MediatorEndpointOptions> configureOptions)
+        {
             if (!services.Any(x => x.ServiceType == typeof(IMediator)))
             {
                 throw new InvalidOperationException($"typeof(IMediator) is not added to service collection. Make sure to call services.AddMediatR() before service.AddMediatR.AspNetCore.Endpoints()");
@@ -21,10 +26,15 @@ namespace Microsoft.Extensions.DependencyInjection
             var handlerTypes = services.Where(x => x.ServiceType.IsGenericType && x.ServiceType.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))
                 .Select(x => x.ImplementationType);
 
-            return AddMediatREndpoints(services, handlerTypes);
+            return AddMediatREndpoints(services, handlerTypes, configureOptions);
         }
 
         public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes)
+        {
+            return services.AddMediatREndpoints(handlerTypes, configureOptions: null);
+        }
+
+        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes, Action<MediatorEndpointOptions> configureOptions)
         {
             var endpoints = new List<MediatorEndpoint>();
 
@@ -97,6 +107,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var mediatorEndpointCollections = new MediatorEndpointCollections(endpoints);
             services.AddSingleton(mediatorEndpointCollections);
+
+            if (configureOptions != null)
+            {
+                services.Configure(configureOptions);
+            }
 
             return services;
         }
