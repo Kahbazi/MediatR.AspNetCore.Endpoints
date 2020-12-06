@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using System.Reflection;
-using MediatR.AspNetCore.Endpoints.OpenApi;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Options;
 
 namespace MediatR.AspNetCore.Endpoints.OpenApi
 {
     public class MediatorEndpointApiDescriptionGroupCollectionProvider : IApiDescriptionGroupCollectionProvider
     {
-        private readonly IOptions<MediatorEndpointOptions> _options;
+        private readonly MediatorEndpointCollections _mediatorEndpointCollections;
 
-        public MediatorEndpointApiDescriptionGroupCollectionProvider(IOptions<MediatorEndpointOptions> options)
+        public MediatorEndpointApiDescriptionGroupCollectionProvider(MediatorEndpointCollections mediatorEndpointCollections)
         {
-            _options = options;
+            _mediatorEndpointCollections = mediatorEndpointCollections;
         }
 
         public int Order => 1;
@@ -24,7 +22,7 @@ namespace MediatR.AspNetCore.Endpoints.OpenApi
             get {
                 var apis = new List<ApiDescription>();
 
-                foreach (var endpoint in _options.Value.Endpoints)
+                foreach (var endpoint in _mediatorEndpointCollections.Endpoints)
                 {
                     var httpMethodMetadata = endpoint.GetMetadata<HttpMethodMetadata>();
 

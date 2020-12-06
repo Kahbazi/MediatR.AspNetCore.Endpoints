@@ -95,10 +95,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
 
-            services.Configure<MediatorEndpointOptions>(options =>
-            {
-                options.Endpoints = endpoints;
-            });
+            var mediatorEndpointCollections = new MediatorEndpointCollections(endpoints);
+            services.AddSingleton(mediatorEndpointCollections);
 
             return services;
         }

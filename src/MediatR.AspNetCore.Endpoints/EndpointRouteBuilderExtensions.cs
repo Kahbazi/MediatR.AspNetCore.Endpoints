@@ -20,9 +20,9 @@ namespace MediatR.AspNetCore.Endpoints
                 throw new InvalidOperationException($"IMediator has not added to IServiceCollection. You can add it with services.AddMediatR(...);");
             }
 
-            var options = endpointsBuilder.ServiceProvider.GetService<IOptions<MediatorEndpointOptions>>();
+            var mediatorEndpointCollections = endpointsBuilder.ServiceProvider.GetService<MediatorEndpointCollections>();
 
-            foreach (var endpoint in options.Value.Endpoints)
+            foreach (var endpoint in mediatorEndpointCollections.Endpoints)
             {
                 var routePattern = RoutePatternFactory.Parse(endpoint.Uri);
 
