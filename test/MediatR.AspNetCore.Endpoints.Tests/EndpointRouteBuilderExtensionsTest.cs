@@ -26,11 +26,11 @@ namespace MediatREndpoint.Tests
         }
 
         [Test]
-        public void RequestWithNoAttribute()
+        public void RequestWithNoAttribute_AddHandlersWithoutHttpMethodAttribute_True()
         {
             var services = new ServiceCollection().AddMediatR(GetType().Assembly);
 
-            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) });
+            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) }, addHandlersWithoutHttpMethodAttribute: true);
 
             var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
             IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
@@ -41,7 +41,21 @@ namespace MediatREndpoint.Tests
             var endpoint = dataSource.Endpoints.First();
 
             AssertEndpoint(endpoint, HttpMethods.Post, typeof(SimpleRequest).Name);
+        }
 
+        [Test]
+        public void RequestWithNoAttribute_AddHandlersWithoutHttpMethodAttribute_False()
+        {
+            var services = new ServiceCollection().AddMediatR(GetType().Assembly);
+
+            services.AddMediatREndpoints(new Type[] { typeof(SimpleRequestHandler) });
+
+            var applicationBuilder = new ApplicationBuilder(services.BuildServiceProvider());
+            IEndpointRouteBuilder builder = new DefaultEndpointRouteBuilder(applicationBuilder);
+
+            builder.MapMediatR();
+
+            Assert.IsEmpty(builder.DataSources);
         }
 
         [Test]

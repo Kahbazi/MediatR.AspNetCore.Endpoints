@@ -18,6 +18,11 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, Action<MediatorEndpointOptions> configureOptions)
         {
+            return services.AddMediatREndpoints(addHandlersWithoutHttpMethodAttribute: false, configureOptions);
+        }
+
+        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, bool addHandlersWithoutHttpMethodAttribute = false, Action<MediatorEndpointOptions> configureOptions = null)
+        {
             if (!services.Any(x => x.ServiceType == typeof(IMediator)))
             {
                 throw new InvalidOperationException($"typeof(IMediator) is not added to service collection. Make sure to call services.AddMediatR() before service.AddMediatR.AspNetCore.Endpoints()");
@@ -26,15 +31,10 @@ namespace Microsoft.Extensions.DependencyInjection
             var handlerTypes = services.Where(x => x.ServiceType.IsGenericType && x.ServiceType.GetGenericTypeDefinition() == typeof(IRequestHandler<,>))
                 .Select(x => x.ImplementationType);
 
-            return AddMediatREndpoints(services, handlerTypes, configureOptions);
+            return AddMediatREndpoints(services, handlerTypes, addHandlersWithoutHttpMethodAttribute, configureOptions);
         }
 
-        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes)
-        {
-            return services.AddMediatREndpoints(handlerTypes, configureOptions: null);
-        }
-
-        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes, Action<MediatorEndpointOptions> configureOptions)
+        public static IServiceCollection AddMediatREndpoints(this IServiceCollection services, IEnumerable<Type> handlerTypes, bool addHandlersWithoutHttpMethodAttribute = false, Action<MediatorEndpointOptions> configureOptions = null)
         {
             var endpoints = new List<MediatorEndpoint>();
 
@@ -55,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var attributes = handlerType.GetMethod("Handle").GetCustomAttributes(false);
 
                 var httpAttributes = attributes.OfType<HttpMethodAttribute>().ToArray();
-                if (httpAttributes.Length == 0)
+                if (httpAttributes.Length == 0 && addHandlersWithoutHttpMethodAttribute)
                 {
                     var httpMethodMetadata = new HttpMethodMetadata(new[] { HttpMethods.Post });
 
