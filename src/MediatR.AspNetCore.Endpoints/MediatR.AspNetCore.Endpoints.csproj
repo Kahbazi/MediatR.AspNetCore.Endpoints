@@ -1,6 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <Version>2.0.0-preview.1</Version>
     <Description>pure MediatR for ASP.NET Core without the needs for controllers</Description>
     <Copyright>Copyright Kahbazi</Copyright>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -12,6 +14,7 @@
     <PackageLicenseUrl>https://github.com/Kahbazi/MediatR.AspNetCore.Endpoints/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/Kahbazi/MediatR.AspNetCore.Endpoints</RepositoryUrl>
+    <Authors>Kahbazi</Authors>
     
   </PropertyGroup>
 
