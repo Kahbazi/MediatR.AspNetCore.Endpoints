@@ -52,6 +52,7 @@ namespace MediatR.AspNetCore.Endpoints
                 try
                 {
                     model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, options.JsonSerializerOptions, context.RequestAborted);
+                    MapRouteData(requestMetadata, context.GetRouteData(), model);
                 }
                 catch (JsonException)
                 {
@@ -67,6 +68,7 @@ namespace MediatR.AspNetCore.Endpoints
             else
             {
                 model = Activator.CreateInstance(requestMetadata.RequestType);
+                MapRouteData(requestMetadata, context.GetRouteData(), model);
             }
 
             if (model is IHttpContextAware httpContextAware)
@@ -84,6 +86,20 @@ namespace MediatR.AspNetCore.Endpoints
             await JsonSerializer.SerializeAsync(context.Response.Body, response, objectType, options.JsonSerializerOptions, context.RequestAborted);
 
             await context.Response.Body.FlushAsync(context.RequestAborted);
+        }
+
+        private static void MapRouteData(IMediatorEndpointMetadata requestMetadata, RouteData routeData, object model)
+        {
+            if (model == null || routeData == null)
+                return;
+            foreach (var item in routeData.Values)
+            {
+                var property = requestMetadata.RequestType.GetProperty(item.Key);
+                if (property != null)
+                {
+                    property.SetValue(model, Convert.ChangeType(item.Value, property.PropertyType));
+                }
+            }
         }
     }
 }
