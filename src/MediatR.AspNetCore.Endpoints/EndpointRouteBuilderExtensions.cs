@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -90,11 +91,15 @@ namespace MediatR.AspNetCore.Endpoints
 
         private static void MapRouteData(IMediatorEndpointMetadata requestMetadata, RouteData routeData, object model)
         {
-            if (model == null || routeData == null)
+            if (model == null || routeData == null || routeData.Values.Count == 0)
+            {
                 return;
+            }
+
+            var properties = requestMetadata.RequestType.GetProperties();
             foreach (var item in routeData.Values)
             {
-                var property = requestMetadata.RequestType.GetProperty(item.Key);
+                var property = properties.Where(p => p.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                 if (property != null)
                 {
                     property.SetValue(model, Convert.ChangeType(item.Value, property.PropertyType));
