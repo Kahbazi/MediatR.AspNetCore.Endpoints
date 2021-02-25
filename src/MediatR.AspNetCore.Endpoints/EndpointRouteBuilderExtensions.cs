@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -99,10 +98,14 @@ namespace MediatR.AspNetCore.Endpoints
             var properties = requestMetadata.RequestType.GetProperties();
             foreach (var item in routeData.Values)
             {
-                var property = properties.Where(p => p.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                if (property != null)
+                for (var i = 0; i < properties.Length; i++)
                 {
-                    property.SetValue(model, Convert.ChangeType(item.Value, property.PropertyType));
+                    var property = properties[i];
+                    if (property.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        property.SetValue(model, Convert.ChangeType(item.Value, property.PropertyType));
+                        break;
+                    }
                 }
             }
         }
