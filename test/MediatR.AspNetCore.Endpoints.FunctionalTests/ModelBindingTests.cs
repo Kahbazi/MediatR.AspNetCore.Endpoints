@@ -45,7 +45,7 @@ namespace MediatR.AspNetCore.Endpoints.FunctionalTests
         public async Task RouteBinding()
         {
             var client = _testServer.CreateClient();
-            var response = await client.GetAsync($"route/47/true/kahbazi");
+            var response = await client.GetAsync($"route/47/true/kahbazi/c5ce57ee-db2f-4d7a-b627-b8e36b375fc9");
 
             var json = await response.Content.ReadAsStringAsync();
             var result = JsonSerializer.Deserialize<RouteBindingRequest>(json);
@@ -53,6 +53,7 @@ namespace MediatR.AspNetCore.Endpoints.FunctionalTests
             Assert.AreEqual(47, result.Id);
             Assert.IsTrue(result.IsActive);
             Assert.AreEqual("kahbazi", result.Name);
+            Assert.AreEqual("c5ce57ee-db2f-4d7a-b627-b8e36b375fc9", result.Identifier.ToString());
         }
     }
 }

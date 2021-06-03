@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -103,7 +104,8 @@ namespace MediatR.AspNetCore.Endpoints
                     var property = properties[i];
                     if (property.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        property.SetValue(model, Convert.ChangeType(item.Value, property.PropertyType));
+                        var value = TypeDescriptor.GetConverter(property.PropertyType).ConvertFromString(item.Value.ToString());
+                        property.SetValue(model, value);
                         break;
                     }
                 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -12,11 +13,13 @@ namespace MediatREndpoint.FunctionalTests.Requests
         public bool IsActive { get; set; }
 
         public string Name { get; set; }
+
+        public Guid Identifier { get; set; }
     }
 
     public class RouteBindingRequestHandler : IRequestHandler<RouteBindingRequest, RouteBindingRequest>
     {
-        [HttpGet("route/{id}/{isActive}/{name}")]
+        [HttpGet("route/{id}/{isActive}/{name}/{identifier}")]
         public Task<RouteBindingRequest> Handle(RouteBindingRequest request, CancellationToken cancellationToken)
         {
             return Task.FromResult(request);
