@@ -55,14 +55,14 @@ namespace MediatR.AspNetCore.Endpoints
                     model = await JsonSerializer.DeserializeAsync(context.Request.Body, requestMetadata.RequestType, options.JsonSerializerOptions, context.RequestAborted);
                     MapRouteData(requestMetadata, context.GetRouteData(), model);
                 }
-                catch (JsonException)
+                catch (JsonException exception)
                 {
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await options.OnDeserializeError(context, exception);
                     return;
                 }
                 catch (Exception exception) when (exception is FormatException || exception is OverflowException)
                 {
-                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await options.OnDeserializeError(context, exception);
                     return;
                 }
             }
