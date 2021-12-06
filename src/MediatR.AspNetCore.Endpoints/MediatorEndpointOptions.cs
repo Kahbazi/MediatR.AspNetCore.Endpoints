@@ -9,9 +9,8 @@ namespace MediatR.AspNetCore.Endpoints
     {
         public JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        public Func<HttpContext, Exception, Task> OnDeserializeError { get; set; } = (context, _) =>
+        public Func<HttpContext, Exception, Task> OnDeserializeError { get; set; } = (_, _) =>
         {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
             return Task.CompletedTask;
         };
     }

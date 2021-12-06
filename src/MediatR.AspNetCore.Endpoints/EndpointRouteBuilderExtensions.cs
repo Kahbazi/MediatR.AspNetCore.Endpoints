@@ -57,11 +57,13 @@ namespace MediatR.AspNetCore.Endpoints
                 }
                 catch (JsonException exception)
                 {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await options.OnDeserializeError(context, exception);
                     return;
                 }
                 catch (Exception exception) when (exception is FormatException || exception is OverflowException)
                 {
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
                     await options.OnDeserializeError(context, exception);
                     return;
                 }

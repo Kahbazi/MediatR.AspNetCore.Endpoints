@@ -15,7 +15,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/Kahbazi/MediatR.AspNetCore.Endpoints</RepositoryUrl>
     <Authors>Kahbazi</Authors>
-    
+    <LangVersion>LatestMajor</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
